@@ -123,7 +123,6 @@ public class UserController {
 			model.addAttribute("postlist", postService.findAll());
 			return "/update";
 		}
-//		User userUpdate = userService.getOne(id);
 		if (StringUtils.isEmpty(password) == true) {
 			User userUpdate = userService.getOne(id);
 			userService.save(userUpdate);
