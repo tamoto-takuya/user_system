@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,11 +60,11 @@ public class UserController {
 
 	//ユーザー編集画面遷移
 	@GetMapping(value = "/{id}/update")
-	  public String update(@PathVariable("id") Integer id, Model model) {
-	    model.addAttribute("user", userService.getOne(id));
-	    model.addAttribute("branchlist", branchService.findAll());
+	public String update(@PathVariable("id") Integer id, Model model) {
+		model.addAttribute("user", userService.getOne(id));
+		model.addAttribute("branchlist", branchService.findAll());
 		model.addAttribute("postlist", postService.findAll());
-	    return "/update";
+		return "/update";
 	}
 
 	//新規登録実行
@@ -97,9 +98,9 @@ public class UserController {
 
 	//ユーザー編集更新実行
 	@PostMapping(value = "/{id}/update")
-	  public String update(@ModelAttribute("confirmPass") String confirmPass,
-			  @ModelAttribute("loginId") String loginId,@ModelAttribute("id") Integer id,
-			  Model model, @Validated  @ModelAttribute("user") User user, BindingResult result) {
+	public String update(@ModelAttribute("confirmPass") String confirmPass, @ModelAttribute("password") String password,
+			@ModelAttribute("loginId") String loginId,@ModelAttribute("id") Integer id,
+			Model model, @Validated  @ModelAttribute("user") User user, BindingResult result) {
 
 		//findByIdOriginalで同じログインIDをリストに格納。同じものがあればエラー表示
 		List<User> exitsLoginId = userRepository.findByIdOriginal(loginId, id);
@@ -120,10 +121,17 @@ public class UserController {
 		if (result.hasErrors()) {
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
-		    return "/update";
-		 }
+			return "/update";
+		}
+//		User userUpdate = userService.getOne(id);
+		if (StringUtils.isEmpty(password) == true) {
+			User userUpdate = userService.getOne(id);
+			userService.save(userUpdate);
+			return "redirect:/users";
+		}
 		userService.save(user);
 		return "redirect:/users";
+
 	}
 
 	//復活停止
@@ -137,8 +145,8 @@ public class UserController {
 
 	//削除機能
 	@DeleteMapping("/{id}")
-    public String destroy(@PathVariable Integer id) {
-        userService.deleteById(id);
-        return "redirect:/users";
-    }
+	public String destroy(@PathVariable Integer id) {
+		userService.deleteById(id);
+		return "redirect:/users";
+	}
 }

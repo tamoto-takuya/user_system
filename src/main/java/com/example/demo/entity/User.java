@@ -34,8 +34,7 @@ public class User {
 	@Column(name = "name")
 	private String name;
 
-	@NotEmpty(message = "パスワードを入力してください！")
-	@Pattern(regexp = "^([a-zA-Z0-9]{6,20})$", message ="半角英数字6文字以上、20文字以下にしてください！")
+//	@Pattern(regexp = "^([a-zA-Z0-9]{6,20})$", message ="半角英数字6文字以上、20文字以下にしてください！")
 	@Column(name = "pass")
 	private String password;
 

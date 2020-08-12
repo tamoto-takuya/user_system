@@ -17,6 +17,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	List<User> findByLoginIdContaining(String loginId);
 
-
-//	List<User> findByLoginIdContaining(String loginId);
 }
