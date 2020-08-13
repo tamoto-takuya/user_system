@@ -70,7 +70,9 @@ public class UserController {
 	//新規登録実行
 	@PostMapping(value = "/signup")
 	public String signup(Model model, @Validated @ModelAttribute("user") User user, BindingResult result,
-			@ModelAttribute("confirmPass") String confirmPass,@RequestParam(value = "loginId" )String loginId) {
+			@ModelAttribute("confirmPass") String confirmPass,@ModelAttribute("password") String password,
+			@RequestParam(value = "loginId" )String loginId) {
+
 		if (result.hasErrors()) {
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
@@ -79,19 +81,31 @@ public class UserController {
 		//findByIdloginidで同じログインIDをリストに格納。1つでも同じものがあればエラー表示
 		List<User> exitsLoginId = userService.findByLoginIdContaining(loginId);
 		if (exitsLoginId.size()!= 0) {
-			model.addAttribute("msg1", "ログインIDが存在します！！");
+			model.addAttribute("message", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		}
 
-		if (!user.getPassword().equals(confirmPass)) {
-			model.addAttribute("msg2", "パスワードが一致しません！");
+		if (StringUtils.isEmpty(password) == true) {
+			model.addAttribute("msg", "パスワードを入力してください");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
+		} else {
+			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
+				model.addAttribute("msg", "パスワード半角英数字6文字以上20文字以下で入力してください！");
+				model.addAttribute("branchlist", branchService.findAll());
+				model.addAttribute("postlist", postService.findAll());
+				return "/signup";
+			}
+			if (!password.equals(confirmPass)) {
+				model.addAttribute("msg", "パスワードが一致しません！");
+				model.addAttribute("branchlist", branchService.findAll());
+				model.addAttribute("postlist", postService.findAll());
+				return "/signup";
+			}
 		}
-
 		userService.save(user);
 		return "redirect:/users";
 	}
@@ -105,14 +119,7 @@ public class UserController {
 		//findByIdOriginalで同じログインIDをリストに格納。同じものがあればエラー表示
 		List<User> exitsLoginId = userRepository.findByIdOriginal(loginId, id);
 		if (exitsLoginId.size() != 0) {
-			model.addAttribute("msg1", "ログインIDが存在します！！");
-			model.addAttribute("branchlist", branchService.findAll());
-			model.addAttribute("postlist", postService.findAll());
-			return "/update";
-		}
-
-		if (!user.getPassword().equals(confirmPass)) {
-			model.addAttribute("msg2", "パスワードが一致しません！");
+			model.addAttribute("message", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/update";
@@ -123,10 +130,24 @@ public class UserController {
 			model.addAttribute("postlist", postService.findAll());
 			return "/update";
 		}
+
 		if (StringUtils.isEmpty(password) == true) {
 			User userUpdate = userService.getOne(id);
 			userService.save(userUpdate);
 			return "redirect:/users";
+		} else {
+			if (!user.getPassword().equals(confirmPass)) {
+				model.addAttribute("msg", "パスワードが一致しません！");
+				model.addAttribute("branchlist", branchService.findAll());
+				model.addAttribute("postlist", postService.findAll());
+				return "/update";
+			}
+			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
+				model.addAttribute("msg", "パスワード半角英数字6文字以上20文字以下で入力してください！");
+				model.addAttribute("branchlist", branchService.findAll());
+				model.addAttribute("postlist", postService.findAll());
+				return "/update";
+			}
 		}
 		userService.save(user);
 		return "redirect:/users";
