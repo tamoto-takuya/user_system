@@ -22,7 +22,7 @@
 					<div class="col-6">
 						<input class="form-control" type="text" th:field="*{loginId}"/>
 						<span class="text-danger" th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}"></span>
-						<span class="text-danger" th:text="${message}"></span>
+						<span class="text-danger" th:text="${loginIdMessage}"></span>
 					</div>
 				</div>
 
@@ -38,7 +38,7 @@
 					<label class="col-2 col-form-label">パスワード</label>
 					<div class="col-6">
 						<input type="password" th:field="*{password}" class="form-control" />
-						<span class="text-danger" th:text="${msg}"></span>
+						<span class="text-danger" th:text="${passMessage}" ></span>
 					</div>
 				</div>
 
@@ -46,6 +46,7 @@
 					<label class="col-2 col-form-label">確認パスワード</label>
 					<div class="col-6">
 						<input type="password" class="form-control" name="confirmPass" id="confirmPass" />
+						<span class="text-danger" th:text="${confirmPassMessage}" ></span>
 					</div>
 				</div>
 

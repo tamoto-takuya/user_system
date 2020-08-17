@@ -81,26 +81,26 @@ public class UserController {
 		//findByIdloginidで同じログインIDをリストに格納。1つでも同じものがあればエラー表示
 		List<User> exitsLoginId = userService.findByLoginIdContaining(loginId);
 		if (exitsLoginId.size()!= 0) {
-			model.addAttribute("message", "ログインIDが存在します！！");
+			model.addAttribute("loginIdMessage", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		}
 
 		if (StringUtils.isEmpty(password) == true) {
-			model.addAttribute("msg", "パスワードを入力してください");
+			model.addAttribute("passMessage", "パスワードを入力してください");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		} else {
 			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
-				model.addAttribute("msg", "パスワード半角英数字6文字以上20文字以下で入力してください！");
+				model.addAttribute("passMessage", "パスワード半角英数字6文字以上20文字以下で入力してください！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/signup";
 			}
 			if (!password.equals(confirmPass)) {
-				model.addAttribute("msg", "パスワードが一致しません！");
+				model.addAttribute("confirmPassMessage", "パスワードが一致しません！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/signup";
@@ -119,7 +119,7 @@ public class UserController {
 		//findByIdOriginalで同じログインIDをリストに格納。同じものがあればエラー表示
 		List<User> exitsLoginId = userRepository.findByIdOriginal(loginId, id);
 		if (exitsLoginId.size() != 0) {
-			model.addAttribute("message", "ログインIDが存在します！！");
+			model.addAttribute("loginIdMessage", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/update";
@@ -137,13 +137,13 @@ public class UserController {
 			return "redirect:/users";
 		} else {
 			if (!user.getPassword().equals(confirmPass)) {
-				model.addAttribute("msg", "パスワードが一致しません！");
+				model.addAttribute("confirmPassMessage", "パスワードが一致しません！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/update";
 			}
 			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
-				model.addAttribute("msg", "パスワード半角英数字6文字以上20文字以下で入力してください！");
+				model.addAttribute("passMessage", "パスワード半角英数字6文字以上20文字以下で入力してください！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/update";
