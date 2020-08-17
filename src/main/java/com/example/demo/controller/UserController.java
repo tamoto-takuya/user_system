@@ -133,6 +133,10 @@ public class UserController {
 
 		if (StringUtils.isEmpty(password) == true) {
 			User userUpdate = userService.getOne(id);
+			userUpdate.setLoginId(user.getLoginId());
+			userUpdate.setName(user.getName());
+			userUpdate.setBranch(user.getBranch());
+			userUpdate.setPost(user.getPost());
 			userService.save(userUpdate);
 			return "redirect:/users";
 		} else {
