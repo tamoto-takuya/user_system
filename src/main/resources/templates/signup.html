@@ -51,21 +51,26 @@
 
 				<div class="form-group row" style="margin-top:3%">
 					<label class="col-2 col-form-label">所属</label>
-					<select class="col-5 form-control" th:field="*{branch.id}" style="margin-left:1%">
-						<option value="">----</option>
-						<option th:each="branch:${branchlist}" th:value="${branch.id}" th:text="${branch.name}"></option>
-					</select>
+					<div class="col-6">
+						<select class="form-control" th:field="*{branch}">
+							<option value="0">----</option>
+							<option th:each="branch:${branchlist}" th:value="${branch.id}" th:text="${branch.name}"></option>
+						</select>
+						<span class="text-danger" th:text="${branchMessage}" ></span>
+					</div>
 				</div>
 
 				<div class="form-group row" style="margin-top:3%">
 					<label class="col-2 col-form-label">役職</label>
-					<select class="col-5 form-control" th:field="*{post.id}" style="margin-left:1%">
-						<option value="">----</option>
-						<option th:each="post:${postlist}" th:value="${post.id}" th:text="${post.name}"></option>
-					</select>
+					<div class="col-6">
+						<select class="form-control" th:field="*{post}">
+							<option value="0">----</option>
+							<option th:each="post:${postlist}" th:value="${post.id}" th:text="${post.name}"></option>
+						</select>
+						<span class="text-danger" th:text="${postMessage}" ></span>
+					</div>
 				</div>
 				<input name="is_active" value=0 id="is_active" type="hidden"/>
-
 
 				<div class="form-group row" style="margin-top:3%">
 					<div class="offset-2 col-6">
@@ -76,7 +81,5 @@
 			</form>
 		</div>
 	</div>
-
-
 </body>
 </html>

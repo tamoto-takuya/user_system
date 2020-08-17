@@ -52,18 +52,20 @@
 
 				<div class="form-group row" style="margin-top:3%">
 					<label class="col-2 col-form-label">所属</label>
-					<select class="col-5 form-control" id="branch.id" name="branch.id" style="margin-left:1%">
-						<option value="">----</option>
-						<option th:each="branch:${branchlist}" th:value="${branch.id}" th:selected="${branch.id == user.branch.id}" th:text="${branch.name}"></option>
-					</select>
+					<div class="col-6">
+						<select class="form-control" th:field="*{branch.id}">
+							<option th:each="branch:${branchlist}" th:value="${branch.id}" th:selected="${branch.id == user.branch.id}" th:text="${branch.name}"></option>
+						</select>
+					</div>
 				</div>
 
 				<div class="form-group row" style="margin-top:3%">
 					<label class="col-2 col-form-label">役職</label>
-					<select class="col-5 form-control" id="post.id" name="post.id" style="margin-left:1%">
-						<option value="">----</option>
-						<option th:each="post:${postlist}" th:value="${post.id}" th:selected="${post.id == user.post.id}" th:text="${post.name}"></option>
-					</select>
+					<div class="col-6">
+						<select class="form-control" th:field="*{post.id}">
+							<option th:each="post:${postlist}" th:value="${post.id}" th:selected="${post.id == user.post.id}" th:text="${post.name}"></option>
+						</select>
+					</div>
 				</div>
 				<input name="is_active" th:value="${user.is_active}" id="is_active" type="hidden"/>
 

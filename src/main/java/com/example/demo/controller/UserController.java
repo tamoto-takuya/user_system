@@ -70,8 +70,8 @@ public class UserController {
 	//新規登録実行
 	@PostMapping(value = "/signup")
 	public String signup(Model model, @Validated @ModelAttribute("user") User user, BindingResult result,
-			@ModelAttribute("confirmPass") String confirmPass,@ModelAttribute("password") String password,
-			@RequestParam(value = "loginId" )String loginId) {
+			@ModelAttribute("confirmPass") String confirmPass,@ModelAttribute("branch") Integer branch,
+			@ModelAttribute("post") Integer post,@RequestParam(value = "loginId" )String loginId) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("branchlist", branchService.findAll());
@@ -86,25 +86,30 @@ public class UserController {
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		}
-
-		if (StringUtils.isEmpty(password) == true) {
+		if (StringUtils.isEmpty(user.getPassword()) == true) {
 			model.addAttribute("passMessage", "パスワードを入力してください");
 			model.addAttribute("branchlist", branchService.findAll());
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		} else {
-			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
+			if (!user.getPassword().matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
 				model.addAttribute("passMessage", "パスワード半角英数字6文字以上20文字以下で入力してください！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/signup";
 			}
-			if (!password.equals(confirmPass)) {
+			if (!user.getPassword().equals(confirmPass)) {
 				model.addAttribute("confirmPassMessage", "パスワードが一致しません！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
 				return "/signup";
 			}
+		}
+		if (branch == 0) {
+			model.addAttribute("branchMessage", "所属を選んでください！！");
+			model.addAttribute("branchlist", branchService.findAll());
+			model.addAttribute("postlist", postService.findAll());
+			return "/signup";
 		}
 		userService.save(user);
 		return "redirect:/users";
