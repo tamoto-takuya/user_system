@@ -9,6 +9,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
 <title>ユーザー管理システム</title>
+<script type="text/javascript">
+	function disp() {
+		alert("ユーザー状態変更します!!");
+	}
+	function clickEvent() {
+		alert("ユーザー情報削除します!!");
+	}
+</script>
 </head>
 <body>
 	<div style="margin:1% 5%">
@@ -32,7 +40,7 @@
 					<td th:text="*{branch.name}"></td>
 					<td th:text="*{post.name}"></td>
 					<td>
-						<form th:action="@{/users/}" method="post">
+						<form th:action="@{/users/}" method="post" onClick="disp()">
 							<input name="id" th:value="*{id}" id="id" type="hidden" />
 								<span th:if="*{is_active == 0}">
 									<input name="is_active" value=1 id="is_active" type="hidden" />
@@ -45,7 +53,7 @@
 						</form>
 					</td>
 					<td>
-						<form th:action="@{/users/{id}(id=*{id})}" th:method="delete">
+						<form th:action="@{/users/{id}(id=*{id})}" th:method="delete" onClick="clickEvent()">
 							<button class="btn btn-danger" type="submit" value="削除">削除</button>
 						</form>
 					</td>
