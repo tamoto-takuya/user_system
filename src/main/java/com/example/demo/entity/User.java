@@ -36,7 +36,6 @@ public class User {
 	@Column(name = "pass")
 	private String password;
 
-//	@NotBlank(message = "所属を選んでください！")
 	@OneToOne
 	@JoinColumn(name = "branch_id")
 	private Branch branch;

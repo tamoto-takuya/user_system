@@ -70,8 +70,8 @@ public class UserController {
 	//新規登録実行
 	@PostMapping(value = "/signup")
 	public String signup(Model model, @Validated @ModelAttribute("user") User user, BindingResult result,
-			@ModelAttribute("confirmPass") String confirmPass,@ModelAttribute("branch") Integer branch,
-			@ModelAttribute("post") Integer post,@RequestParam(value = "loginId" )String loginId) {
+			@ModelAttribute("post") Integer post,@ModelAttribute("branch") Integer branch,
+			@ModelAttribute("confirmPass") String confirmPass) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("branchlist", branchService.findAll());
@@ -79,7 +79,7 @@ public class UserController {
 			return "/signup";
 		}
 		//findByIdloginidで同じログインIDをリストに格納。1つでも同じものがあればエラー表示
-		List<User> exitsLoginId = userService.findByLoginIdContaining(loginId);
+		List<User> exitsLoginId = userService.findByLoginIdContaining(user.getLoginId());
 		if (exitsLoginId.size()!= 0) {
 			model.addAttribute("loginIdMessage", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
@@ -111,18 +111,23 @@ public class UserController {
 			model.addAttribute("postlist", postService.findAll());
 			return "/signup";
 		}
+		if (post == 0) {
+			model.addAttribute("branchMessage", "役職を選んでください！！");
+			model.addAttribute("branchlist", branchService.findAll());
+			model.addAttribute("postlist", postService.findAll());
+			return "/signup";
+		}
 		userService.save(user);
 		return "redirect:/users";
 	}
 
 	//ユーザー編集更新実行
 	@PostMapping(value = "/{id}/update")
-	public String update(@ModelAttribute("confirmPass") String confirmPass, @ModelAttribute("password") String password,
-			@ModelAttribute("loginId") String loginId,@ModelAttribute("id") Integer id,
+	public String update(@ModelAttribute("confirmPass") String confirmPass,
 			Model model, @Validated  @ModelAttribute("user") User user, BindingResult result) {
 
 		//findByIdOriginalで同じログインIDをリストに格納。同じものがあればエラー表示
-		List<User> exitsLoginId = userRepository.findByIdOriginal(loginId, id);
+		List<User> exitsLoginId = userRepository.findByIdOriginal(user.getLoginId(), user.getId());
 		if (exitsLoginId.size() != 0) {
 			model.addAttribute("loginIdMessage", "ログインIDが存在します！！");
 			model.addAttribute("branchlist", branchService.findAll());
@@ -136,8 +141,8 @@ public class UserController {
 			return "/update";
 		}
 
-		if (StringUtils.isEmpty(password) == true) {
-			User userUpdate = userService.getOne(id);
+		if (StringUtils.isEmpty(user.getPassword()) == true) {
+			User userUpdate = userService.getOne(user.getId());
 			userUpdate.setLoginId(user.getLoginId());
 			userUpdate.setName(user.getName());
 			userUpdate.setBranch(user.getBranch());
@@ -151,7 +156,7 @@ public class UserController {
 				model.addAttribute("postlist", postService.findAll());
 				return "/update";
 			}
-			if (!password.matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
+			if (!user.getPassword().matches("[a-zA-Z0-9!-/:-@\\[-`{-~]{6,20}")) {
 				model.addAttribute("passMessage", "パスワード半角英数字6文字以上20文字以下で入力してください！");
 				model.addAttribute("branchlist", branchService.findAll());
 				model.addAttribute("postlist", postService.findAll());
@@ -160,7 +165,6 @@ public class UserController {
 		}
 		userService.save(user);
 		return "redirect:/users";
-
 	}
 
 	//復活停止
