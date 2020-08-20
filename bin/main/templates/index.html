@@ -42,14 +42,14 @@
 					<td>
 						<form th:action="@{/users/}" method="post" onClick="disp()">
 							<input name="id" th:value="*{id}" id="id" type="hidden" />
-								<span th:if="*{is_active == 0}">
+							<span th:if="*{is_active == 0}">
 								<input name="is_active" value=1 id="is_active" type="hidden" />
 								<button class="btn btn-success" type="submit" value="復活">復活</button>
-								</span>
-								<span th:if="*{is_active == 1}">
+							</span>
+							<span th:if="*{is_active == 1}">
 								<input name="is_active" value=0 id="is_active" type="hidden" />
 								<button class="btn btn-warning" type="submit" value="停止">停止</button>
-								</span>
+							</span>
 						</form>
 					</td>
 					<td>
