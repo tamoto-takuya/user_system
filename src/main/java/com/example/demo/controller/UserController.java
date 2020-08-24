@@ -62,7 +62,7 @@ public class UserController {
 	//ユーザー編集画面遷移
 	@GetMapping(value = "/{id}/update")
 	public String update(@PathVariable("id") Integer id, Model model) {
-		model.addAttribute("user", userService.getOne(id));
+		model.addAttribute("user", userService.findById(id));
 		model.addAttribute("branchlist", branchService.findAll());
 		model.addAttribute("postlist", postService.findAll());
 		return "/update";
@@ -146,7 +146,7 @@ public class UserController {
 		}
 
 		if (StringUtils.isEmpty(user.getPassword()) == true) {
-			User userUpdate = userService.getOne(user.getId());
+			User userUpdate = userService.findById(user.getId());
 			userUpdate.setLoginId(user.getLoginId());
 			userUpdate.setName(user.getName());
 			userUpdate.setBranch(user.getBranch());
@@ -176,7 +176,7 @@ public class UserController {
 	//復活停止
 	@PostMapping
 	public String statusUpdate(@RequestParam("id") Integer id, @RequestParam ("is_active") Integer is_active)  {
-		User userIsActive = userService.getOne(id);
+		User userIsActive = userService.findById(id);
 		userIsActive.setIs_active(is_active);
 		userService.save(userIsActive);
 		return "redirect:/users";
