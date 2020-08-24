@@ -3,74 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script defer
+	src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
 <title>ユーザー管理システム</title>
 </head>
 <body>
-	<div style="margin:1% 5%">
+	<div style="margin: 1% 5%">
 		<h4>ユーザー編集</h4>
 		<hr>
-		<div class="content" style="margin:5% 0 0 10%">
-			<form th:action="@{/users/{id}/update/(id=${user.id})}" th:object="${user}" method="post">
-				<input name="id" th:field="*{id}" id="id" type="hidden"/>
-				<div class="form-group row" th:classappend="${#fields.hasErrors('loginId')}? has-error">
+		<div class="content" style="margin: 5% 0 0 10%">
+			<form th:action="@{/users/{id}/update/(id=${user.id})}"
+				th:object="${user}" method="post">
+				<input name="id" th:field="*{id}" id="id" type="hidden" /> <input
+					name="is_active" th:value="${user.is_active}" id="is_active"
+					type="hidden" />
+				<div class="form-group row"
+					th:classappend="${#fields.hasErrors('loginId')}? has-error">
 					<label class="col-2 col-form-label">ログインID</label>
 					<div class="col-6">
-						<input class="form-control" type="text" th:field="*{loginId}"/>
-						<span class="text-danger" th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}"></span>
-						<span class="text-danger" th:text="${loginIdMessage}"></span>
+						<input class="form-control" type="text" th:field="*{loginId}" /> <span
+							class="text-danger" th:if="${#fields.hasErrors('loginId')}"
+							th:errors="*{loginId}"></span> <span class="text-danger"
+							th:text="${loginIdMessage}"></span>
 					</div>
 				</div>
 
-				<div class="form-group row"  style="margin-top:3%" th:classappend="${#fields.hasErrors('name')}? has-error">
+				<div class="form-group row" style="margin-top: 3%"
+					th:classappend="${#fields.hasErrors('name')}? has-error">
 					<label class="col-2 col-form-label">名前</label>
 					<div class="col-6">
-						<input type="text" class="form-control" th:field="*{name}"/>
-						<span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+						<input type="text" class="form-control" th:field="*{name}" /> <span
+							class="text-danger" th:if="${#fields.hasErrors('name')}"
+							th:errors="*{name}"></span>
 					</div>
 				</div>
 
-				<div class="form-group row" style="margin-top:3%">
+				<div class="form-group row" style="margin-top: 3%">
 					<label class="col-2 col-form-label">パスワード</label>
 					<div class="col-6">
 						<input type="password" th:field="*{password}" class="form-control" />
-						<span class="text-danger" th:text="${passMessage}" ></span>
+						<span class="text-danger" th:text="${passMessage}"></span>
 					</div>
 				</div>
 
-				<div class="form-group row" style="margin-top:3%">
+				<div class="form-group row" style="margin-top: 3%">
 					<label class="col-2 col-form-label">確認パスワード</label>
 					<div class="col-6">
-						<input type="password" class="form-control" name="confirmPass" id="confirmPass" />
-						<span class="text-danger" th:text="${confirmPassMessage}" ></span>
+						<input type="password" class="form-control" name="confirmPass"
+							id="confirmPass" /> <span class="text-danger"
+							th:text="${confirmPassMessage}"></span>
 					</div>
 				</div>
 
-				<div class="form-group row" style="margin-top:3%">
+				<div class="form-group row" style="margin-top: 3%">
 					<label class="col-2 col-form-label">所属</label>
 					<div class="col-6">
 						<select class="form-control" th:field="*{branch.id}">
-							<option th:each="branch:${branchlist}" th:value="${branch.id}" th:selected="${branch.id == user.branch.id}" th:text="${branch.name}"></option>
+							<option th:each="branch:${branchlist}" th:value="${branch.id}"
+								th:selected="${branch.id == user.branch.id}"
+								th:text="${branch.name}"></option>
 						</select>
 					</div>
 				</div>
 
-				<div class="form-group row" style="margin-top:3%">
+				<div class="form-group row" style="margin-top: 3%">
 					<label class="col-2 col-form-label">役職</label>
 					<div class="col-6">
 						<select class="form-control" th:field="*{post.id}">
-							<option th:each="post:${postlist}" th:value="${post.id}" th:selected="${post.id == user.post.id}" th:text="${post.name}"></option>
+							<option th:each="post:${postlist}" th:value="${post.id}"
+								th:selected="${post.id == user.post.id}" th:text="${post.name}"></option>
 						</select>
 					</div>
 				</div>
-				<input name="is_active" th:value="${user.is_active}" id="is_active" type="hidden"/>
 
-
-				<div class="form-group row" style="margin-top:3%">
+				<div class="form-group row" style="margin-top: 3%">
 					<div class="offset-2 col-6">
 						<button type="submit" class="btn btn-primary">更新</button>
 						<a th:href="@{/users}" class="btn btn-secondary">戻る</a>
